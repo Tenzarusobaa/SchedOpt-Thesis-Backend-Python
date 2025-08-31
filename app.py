@@ -9,9 +9,21 @@ import traceback
 
 from upload_scripts import upload_bp
 from save_scripts import save_bp
+from dotenv import load_dotenv
+load_dotenv()
 
 app = Flask(__name__)
 CORS(app)
+
+def get_db_connection():
+    conn = mysql.connector.connect(
+        user=os.getenv("MYSQLUSER", "root"),
+        password=os.getenv("MYSQLPASSWORD", ""),
+        database=os.getenv("MYSQLDATABASE", "schedopt_db"),
+        host=os.getenv("MYSQLHOST", "localhost"),
+        port=int(os.getenv("MYSQLPORT", 3306))
+    )
+    return conn
 
 @app.route('/download_templates', methods=['GET'])
 def download_templates():
@@ -30,12 +42,7 @@ def home():
 
 # --- Table check function (reusable) ---
 def check_all_tables():
-    conn = mysql.connector.connect(
-        user='root',
-        password='',
-        database='schedopt_db',
-        host='localhost'
-    )
+    conn = get_db_connection()
     cursor = conn.cursor()
 
     table_map = {

@@ -1,14 +1,20 @@
 import mysql.connector
 from flask import Blueprint, request, jsonify
+import os
+from dotenv import load_dotenv
+
+# Load .env values
+load_dotenv()
 
 save_bp = Blueprint('save_bp', __name__)
 
 def get_connection():
     return mysql.connector.connect(
-        user='root',
-        password='',
-        database='schedopt_db',
-        host='localhost'
+        user=os.getenv("MYSQLUSER", "root"),
+        password=os.getenv("MYSQLPASSWORD", ""),
+        database=os.getenv("MYSQLDATABASE", "schedopt_db"),
+        host=os.getenv("MYSQLHOST", "localhost"),
+        port=int(os.getenv("MYSQLPORT", 3306))
     )
 
 # --- Save Forecasted ---

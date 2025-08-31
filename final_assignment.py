@@ -2,6 +2,11 @@ import mysql.connector
 from mysql.connector import Error
 from collections import defaultdict
 from datetime import datetime, time
+import os
+from dotenv import load_dotenv
+
+# Load environment variables
+load_dotenv()
 
 class CourseScheduler:
     def __init__(self, db_config):
@@ -580,10 +585,11 @@ class CourseScheduler:
 
 # Database configuration
 db_config = {
-    'host': 'localhost',
-    'user': 'root',
-    'password': '', 
-    'database': 'schedopt_db'
+    'host': os.getenv("MYSQLHOST", "localhost"),
+    'user': os.getenv("MYSQLUSER", "root"),
+    'password': os.getenv("MYSQLPASSWORD", ""),
+    'database': os.getenv("MYSQLDATABASE", "schedopt_db"),
+    'port': int(os.getenv("MYSQLPORT", 3306))
 }
 
 # Run the scheduler

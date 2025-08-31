@@ -1,12 +1,18 @@
 import mysql.connector
 import string
 from math import ceil
+import os
+from dotenv import load_dotenv
+
+# Load environment variables
+load_dotenv()
 
 db_config = {
-    'host': 'localhost',
-    'user': 'root',
-    'password': '', 
-    'database': 'schedopt_db'
+    'host': os.getenv("MYSQLHOST", "localhost"),
+    'user': os.getenv("MYSQLUSER", "root"),
+    'password': os.getenv("MYSQLPASSWORD", ""),
+    'database': os.getenv("MYSQLDATABASE", "schedopt_db"),
+    'port': int(os.getenv("MYSQLPORT", 3306))
 }
 
 MAX_PER_SECTION = 40

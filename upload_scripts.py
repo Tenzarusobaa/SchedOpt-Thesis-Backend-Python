@@ -1,6 +1,9 @@
-import os
 import pandas as pd
 from flask import Blueprint, request, jsonify
+import os
+from dotenv import load_dotenv
+# Load .env values
+load_dotenv()
 
 upload_bp = Blueprint('upload_bp', __name__)
 UPLOAD_FOLDER = 'uploads'

@@ -1,17 +1,30 @@
 import mysql.connector
 from collections import defaultdict
+import sys
+import os
+from dotenv import load_dotenv
 
-SEMESTER = 1  
+# Load environment variables
+load_dotenv()
+
+
+SEMESTER = 1
+if len(sys.argv) > 1:
+    try:
+        SEMESTER = int(sys.argv[1])
+    except ValueError:
+        SEMESTER = 1
+
 
 def query_db_connection():
-    """Establish database connection"""
+    """Establish database connection (works locally and in Railway)"""
     return mysql.connector.connect(
-        host="127.0.0.1",
-        user="root",
-        password="",
-        database="schedopt_db"
+        host=os.getenv("MYSQLHOST", "localhost"),
+        user=os.getenv("MYSQLUSER", "root"),
+        password=os.getenv("MYSQLPASSWORD", ""),
+        database=os.getenv("MYSQLDATABASE", "schedopt_db"),
+        port=int(os.getenv("MYSQLPORT", 3306))
     )
-
 def query_program_sections():
     """Retrieve all program sections with their details"""
     conn = query_db_connection()
